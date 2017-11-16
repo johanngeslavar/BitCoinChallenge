@@ -1,0 +1,6 @@
+framework module Pods_CurrentcyBitcoinConverter {
+  umbrella header "Pods-CurrentcyBitcoinConverter-umbrella.h"
+
+  export *
+  module * { export * }
+}
