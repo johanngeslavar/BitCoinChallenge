@@ -20,9 +20,14 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     let currencyArray = ["AUD","BRL","CAD","CNY","EUR","GBP","HKD","IDR","ILS","INR","JPY","MXN","NOK","NZD","PLN","RON","RUB","COP","USD","CLP"]
     
+    let simbolArray = ["$","$","$","¥","€","£","元","Rp","₪","₹","¥‎","$","xE","$","zł","bani","руб", "COP$", "USD$ ", "CLP$"]
+    
     let baseURL = "https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC"
     
     var finalURL : String?
+    var finalSimbol : String?
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +55,7 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         print(currencyArray[row])
         finalURL = baseURL + currencyArray[row]
+        finalSimbol = simbolArray[row]
         getBitcoinData(url: finalURL!)
     }
 
@@ -74,10 +80,17 @@ class ViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSo
     
     
     
+    
+    
+    
     func updateBitcoinData(json: JSON)
     {
         if let bitcoinResult = json["ask"].double{
-            labelPrice.text = String(bitcoinResult)
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = NumberFormatter.Style.decimal
+            numberFormatter.groupingSeparator = "."
+            let formateNumber = numberFormatter.string(from: bitcoinResult as NSNumber)
+            labelPrice.text = String(finalSimbol! + " "  + formateNumber!)
         }
         else{
             labelPrice.text = "Servicio no disponible"
